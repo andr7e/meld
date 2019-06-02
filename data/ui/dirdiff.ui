@@ -145,6 +145,7 @@
                         <property name="hexpand">True</property>
                         <property name="editable">True</property>
                         <signal name="activate" handler="on_fileentry_lineedit_activated" swapped="no"/>
+                        <signal name="changed" handler="on_fileentry_lineedit_changed" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -200,6 +201,7 @@
                         <property name="hexpand">True</property>
                         <property name="editable">True</property>
                         <signal name="activate" handler="on_fileentry_lineedit_activated" swapped="no"/>
+                        <signal name="changed" handler="on_fileentry_lineedit_changed" swapped="no"/>
                       </object>
                     </child>
                   </object>

@@ -670,11 +670,24 @@ class DirDiff(MeldDoc, Component):
     def on_fileentry_lineedit_activated(self, entry):
 
         name = entry.get_text()
-        print("Set name " + name + "!")
+        print("Activated " + name + "!")
 
         files = [e.get_text() for e in self.fileentryline[:self.num_panes]]
-        print(files)
+        #print(files)
         self.set_locations(files)
+        
+    # bug: activated signal not always raise after manual changed text and enter
+    # try automaticly set path if we found dir (add to prefrences)
+    def on_fileentry_lineedit_changed(self, entry):
+
+        name = entry.get_text()
+        print("Changed " + name + "!")
+        
+        if os.path.exists(name) and not name.endswith('/'):
+            print("Goto " + name + "!")
+            files = [e.get_text() for e in self.fileentryline[:self.num_panes]]
+            #print(files)
+            self.set_locations(files)
 
     def set_locations(self, locations):
         self.set_num_panes(len(locations))
@@ -1286,19 +1299,14 @@ class DirDiff(MeldDoc, Component):
     def open_dir_external(self):
         pane = self._get_focused_pane()
         
-        print(pane)
         if pane is None:
             return
         files = [
             self.model.value_path(self.model.get_iter(p), pane)
             for p in self._get_selected_paths(pane)
         ]
-        
-        print(files)    
             
-        files = [f if os.path.isdir(f) else os.path.dirname(f) for f in files if f]   
-             
-        print(files)
+        files = [f if os.path.isdir(f) else os.path.dirname(f) for f in files if f]
         
         if len(files) == 1:
             self._open_files(files)
