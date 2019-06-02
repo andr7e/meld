@@ -17,6 +17,7 @@
 import copy
 import functools
 import math
+import os
 
 from gi.repository import Gdk
 from gi.repository import Gio
@@ -1699,11 +1700,20 @@ class FileDiff(MeldDoc, Component):
     def on_fileentry_lineedit_activated(self, entry):
 
         name = entry.get_text()
-        print("Set name " + name + "!")
-
-        #files = [e.get_text() for e in self.fileentryline[:self.num_panes]]
-        #print(files)
-        #self.set_locations(files)
+        print("Activated " + name + "!")
+        
+        if not os.path.exists(name):
+            print("File not found: " + name + "!")
+            return False
+        
+        pane = self.fileentryline[:self.num_panes].index(entry)
+        buffer = self.textbuffer[pane]
+        if self.check_unsaved_changes():
+            myFile = Gio.File.new_for_path(entry.get_text())
+            self.set_file(pane, myFile)
+        else:
+            entry.set_file(buffer.data.gfile)
+        return True
 
     def _get_focused_pane(self):
         for i in range(self.num_panes):
