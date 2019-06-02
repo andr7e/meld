@@ -98,6 +98,10 @@ class MeldWindow(Component):
                 _("Open selected file or directory in the default external "
                   "application"),
                 self.on_open_external),
+			("OpenDirExternal", None, _("Open Directory"), None,
+			_("Open directory contains selected file in the default external filemanager"
+			  "application"),
+			self.on_open_dir_external),
 
             ("ViewMenu", None, _("_View")),
             ("FileStatus", None, _("File Status")),
@@ -499,6 +503,9 @@ class MeldWindow(Component):
 
     def on_open_external(self, *args):
         self.current_doc().open_external()
+        
+    def on_open_dir_external(self, *args):
+        self.current_doc().open_dir_external()
 
     def on_toolbar_stop_clicked(self, *args):
         self.current_doc().stop()

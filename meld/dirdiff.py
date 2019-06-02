@@ -1272,6 +1272,26 @@ class DirDiff(MeldDoc, Component):
         files = [f for f in files if f]
         if files:
             self._open_files(files)
+            
+    def open_dir_external(self):
+        pane = self._get_focused_pane()
+        
+        print(pane)
+        if pane is None:
+            return
+        files = [
+            self.model.value_path(self.model.get_iter(p), pane)
+            for p in self._get_selected_paths(pane)
+        ]
+        
+        print(files)    
+            
+        files = [f if os.path.isdir(f) else os.path.dirname(f) for f in files if f]   
+             
+        print(files)
+        
+        if len(files) == 1:
+            self._open_files(files)
 
     def on_button_ignore_case_toggled(self, button):
         self.refresh()

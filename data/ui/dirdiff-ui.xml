@@ -53,6 +53,7 @@
     <menuitem action="DirDelete" />
     <separator/>
     <menuitem action="OpenExternal" />
+    <menuitem action="OpenDirExternal" />
   </popup>
 
   <popup name="CustomPopup">
