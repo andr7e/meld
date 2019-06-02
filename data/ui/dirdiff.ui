@@ -133,6 +133,25 @@
                 <style>
                   <class name="meld-notebook-toolbar"/>
                 </style>
+                 <child>
+                  <object class="GtkToolItem" id="fileentry_toolitem_line0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <child>
+                      <object class="GtkEntry" id="fileentryline0">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="editable">True</property>
+                        <signal name="activate" handler="on_fileentry_lineedit_activated" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                  </packing>
+                </child>
                 <child>
                   <object class="GtkToolItem" id="fileentry_toolitem0">
                     <property name="visible">True</property>
@@ -149,7 +168,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
+                    <property name="expand">False</property>
                   </packing>
                 </child>
               </object>
@@ -169,6 +188,25 @@
                 <style>
                   <class name="meld-notebook-toolbar"/>
                 </style>
+                 <child>
+                  <object class="GtkToolItem" id="fileentry_toolitem_line1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <child>
+                      <object class="GtkEntry" id="fileentryline1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="editable">True</property>
+                        <signal name="activate" handler="on_fileentry_lineedit_activated" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                  </packing>
+                </child>
                 <child>
                   <object class="GtkToolItem" id="fileentry_toolitem1">
                     <property name="visible">True</property>
@@ -185,7 +223,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
+                    <property name="expand">False</property>
                   </packing>
                 </child>
               </object>
@@ -205,6 +243,25 @@
                 <style>
                   <class name="meld-notebook-toolbar"/>
                 </style>
+                <child>
+                  <object class="GtkToolItem" id="fileentry_toolitem_line2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <child>
+                      <object class="GtkEntry" id="fileentryline2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="editable">True</property>
+                        <signal name="activate" handler="on_fileentry_lineedit_activated" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                  </packing>
+                </child>                                                        
                 <child>
                   <object class="GtkToolItem" id="fileentry_toolitem2">
                     <property name="visible">True</property>

@@ -383,7 +383,7 @@ class DirDiff(MeldDoc, Component):
                                  self.on_text_filters_changed)
         ]
 
-        self.map_widgets_into_lists(["treeview", "fileentry", "scrolledwindow",
+        self.map_widgets_into_lists(["treeview", "fileentry", "fileentryline", "scrolledwindow",
                                      "diffmap", "linkmap", "msgarea_mgr",
                                      "vbox", "dummy_toolbar_linkmap",
                                      "file_toolbar"])
@@ -667,6 +667,15 @@ class DirDiff(MeldDoc, Component):
         paths = [f.get_path() for f in files]
         self.set_locations(paths)
 
+    def on_fileentry_lineedit_activated(self, entry):
+
+        name = entry.get_text()
+        print("Set name " + name + "!")
+
+        files = [e.get_text() for e in self.fileentryline[:self.num_panes]]
+        print(files)
+        self.set_locations(files)
+
     def set_locations(self, locations):
         self.set_num_panes(len(locations))
         # This is difficult to trigger, and to test. Most of the time here we
@@ -684,6 +693,7 @@ class DirDiff(MeldDoc, Component):
         for pane, loc in enumerate(locations):
             if loc:
                 self.fileentry[pane].set_filename(loc)
+                self.fileentryline[pane].set_text(loc)
         child = self.model.add_entries(None, locations)
         self.treeview0.grab_focus()
         self._update_item_state(child)
