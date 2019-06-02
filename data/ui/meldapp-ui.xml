@@ -1,6 +1,5 @@
 <ui>
   <menubar name="Menubar">
-    <placeholder name="AppMenuPlaceholder" />
     <menu action="FileMenu">
       <menuitem action="New" />
       <menuitem action="Save" />
@@ -11,6 +10,7 @@
       <separator/>
       <menuitem action="Recent" />
       <menuitem action="Close" />
+      <menuitem action="Quit" />
     </menu>
     <menu action="EditMenu">
       <menuitem action="Undo"/>
@@ -53,6 +53,7 @@
       <menuitem action="Stop" />
       <menuitem action="Refresh" />
     </menu>
+    <placeholder name="AppMenuPlaceholder" />
   </menubar>
 
   <toolbar action="Toolbar">

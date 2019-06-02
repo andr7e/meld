@@ -5,7 +5,7 @@
         <menuitem action="Preferences"/>
         <menuitem action="Help"/>
         <menuitem action="About"/>
-        <menuitem action="Quit"/>
+        <!-- <menuitem action="Quit"/> -->
       </menu>
     </placeholder>
   </menubar>
