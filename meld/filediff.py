@@ -136,7 +136,7 @@ class FileDiff(MeldDoc, Component):
         bind_settings(self)
 
         widget_lists = [
-            "diffmap", "file_save_button", "file_toolbar", "fileentry",
+            "diffmap", "file_save_button", "file_toolbar", "fileentry", "fileentryline",
             "linkmap", "msgarea_mgr", "readonlytoggle",
             "scrolledwindow", "selector_hbox", "textview", "vbox",
             "dummy_toolbar_linkmap", "filelabel_toolitem", "filelabel",
@@ -1151,6 +1151,7 @@ class FileDiff(MeldDoc, Component):
         """
 
         self.fileentry[pane].set_file(gfile)
+        self.fileentryline[pane].set_text(gfile.get_path())
 
         self.msgarea_mgr[pane].clear()
 
@@ -1694,6 +1695,15 @@ class FileDiff(MeldDoc, Component):
         else:
             entry.set_file(buffer.data.gfile)
         return True
+        
+    def on_fileentry_lineedit_activated(self, entry):
+
+        name = entry.get_text()
+        print("Set name " + name + "!")
+
+        #files = [e.get_text() for e in self.fileentryline[:self.num_panes]]
+        #print(files)
+        #self.set_locations(files)
 
     def _get_focused_pane(self):
         for i in range(self.num_panes):
