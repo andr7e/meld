@@ -392,6 +392,8 @@ class DirDiff(MeldDoc, Component):
 
         self.custom_labels = []
         self.set_num_panes(num_panes)
+        
+        self.loading = False
 
         self.widget.connect("style-updated", self.model.on_style_updated)
         self.model.on_style_updated(self.widget)
@@ -682,14 +684,17 @@ class DirDiff(MeldDoc, Component):
 
         name = entry.get_text()
         print("Changed " + name + "!")
-        
-        if os.path.exists(name) and not name.endswith('/'):
+                
+        if os.path.exists(name) and not name.endswith('/') and self.loading == False:
             print("Goto " + name + "!")
             files = [e.get_text() for e in self.fileentryline[:self.num_panes]]
             #print(files)
             self.set_locations(files)
 
     def set_locations(self, locations):
+		
+        self.loading = True
+		
         self.set_num_panes(len(locations))
         # This is difficult to trigger, and to test. Most of the time here we
         # will actually have had UTF-8 from GTK, which has been unicode-ed by
@@ -714,6 +719,8 @@ class DirDiff(MeldDoc, Component):
         self.scheduler.remove_all_tasks()
         self.recursively_update(Gtk.TreePath.new_first())
         self._update_diffmaps()
+        
+        self.loading = False
 
     def get_comparison(self):
         root = self.model.get_iter_first()
