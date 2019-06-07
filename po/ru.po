@@ -1063,7 +1063,7 @@ msgstr "Редактор"
 
 #: ../data/ui/preferences.ui.h:19
 msgid "Shallow Comparison"
-msgstr "Поверхностное _сравнение"
+msgstr "Поверхностное сравнение"
 
 #: ../data/ui/preferences.ui.h:20
 msgid "C_ompare files based only on size and timestamp"
