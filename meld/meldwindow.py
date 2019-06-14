@@ -224,13 +224,20 @@ class MeldWindow(Component):
             self.widget.add_action(action)
 
         # Create a secondary toolbar, just to hold our progress spinner
+        
+        self.scanning_path  = ""
+        
         toolbutton = Gtk.ToolItem()
+        toolbutton2 = Gtk.ToolItem()
         self.spinner = Gtk.Spinner()
+        self.label = Gtk.Label()
         # Fake out the spinner on Windows. See Gitlab issue #133.
         if os.name == 'nt':
             for attr in ('stop', 'hide', 'show', 'start'):
                 setattr(self.spinner, attr, lambda *args: True)
         toolbutton.add(self.spinner)
+        toolbutton2.add(self.label)
+        self.secondary_toolbar.insert(toolbutton2, -1)
         self.secondary_toolbar.insert(toolbutton, -1)
         # Set a minimum size because the spinner requests nothing
         self.secondary_toolbar.set_size_request(30, -1)
@@ -249,6 +256,7 @@ class MeldWindow(Component):
 
         self.should_close = False
         self.idle_hooked = 0
+        self.timeout_id  = 0
         self.scheduler = LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable)
 
@@ -285,26 +293,60 @@ class MeldWindow(Component):
             self.open_paths([Gio.File.new_for_uri(uri) for uri in uris])
             return True
 
+    # ret=[DIR1 : DIR2] Scanning /my/long/path/
+    # get 80 symbols from last
+    # and use timeout
+    
+    def on_timeout(self, *args, **kwargs):        
+        #print("on_timeout=")
+        
+        if self.timeout_id == None: return False
+        
+        path = self.scanning_path
+        #print("path=" + path)
+            
+        index = path.rfind(' ')
+        if index != -1:
+             text = path[index:]
+                
+             num = len(text)
+             if num > 80: num = 80
+             #print("num=%d" % num)
+             text = text[-num:]
+            
+             self.label.set_label(text)
+                
+        return True
+
     def on_idle(self):
         ret = self.scheduler.iteration()
         if ret and isinstance(ret, str):
+            #print("ret=" + ret)
             self.spinner.set_tooltip_text(ret)
+            self.scanning_path  = ret
 
         pending = self.scheduler.tasks_pending()
         if not pending:
             self.spinner.stop()
             self.spinner.hide()
+            self.label.hide()
+            self.label.set_label("")
             self.spinner.set_tooltip_text("")
             self.idle_hooked = None
+            self.timeout_id = None
             self.actiongroup.get_action("Stop").set_sensitive(False)
         return pending
 
     def on_scheduler_runnable(self, sched):
         if not self.idle_hooked:
             self.spinner.show()
+            self.label.show()
             self.spinner.start()
             self.actiongroup.get_action("Stop").set_sensitive(True)
             self.idle_hooked = GLib.idle_add(self.on_idle)
+            
+        if not self.timeout_id:
+            self.timeout_id  = GLib.timeout_add(200, self.on_timeout, GLib.PRIORITY_DEFAULT_IDLE)
 
     def on_delete_event(self, *extra):
         should_cancel = False
