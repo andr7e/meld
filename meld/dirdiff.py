@@ -1099,17 +1099,19 @@ class DirDiff(MeldDoc, Component):
             busy = self._scan_in_progress > 0
 
             is_single_foldable_row = False
+            is_single_file_row = False
             if (selection.count_selected_rows() == 1):
                 path = selection.get_selected_rows()[1][0]
                 it = self.model.get_iter(path)
                 os_path = self.model.value_path(it, pane)
                 is_single_foldable_row = self.model.is_folder(
                     it, pane, os_path)
+                is_single_file_row = not is_single_foldable_row
 
             get_action("DirCompare").set_sensitive(True)
-            get_action("DirCollapseRecursively").set_sensitive(
+            get_action("DirCollapseRecursively").set_visible(
                 is_single_foldable_row)
-            get_action("DirExpandRecursively").set_sensitive(
+            get_action("DirExpandRecursively").set_visible(
                 is_single_foldable_row)
             get_action("Hide").set_sensitive(True)
             get_action("DirDelete").set_sensitive(
@@ -1121,6 +1123,9 @@ class DirDiff(MeldDoc, Component):
             if self.main_actiongroup:
                 act = self.main_actiongroup.get_action("OpenExternal")
                 act.set_sensitive(is_valid)
+            if self.main_actiongroup:
+                act = self.main_actiongroup.get_action("OpenDirExternal")
+                act.set_visible(is_valid and is_single_file_row)
         else:
             for action in ("DirCompare", "DirCopyLeft", "DirCopyRight",
                            "DirDelete", "Hide"):
