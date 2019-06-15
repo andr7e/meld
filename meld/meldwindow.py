@@ -293,9 +293,8 @@ class MeldWindow(Component):
             self.open_paths([Gio.File.new_for_uri(uri) for uri in uris])
             return True
 
-    # ret=[DIR1 : DIR2] Scanning /my/long/path/
-    # get 80 symbols from last
-    # and use timeout
+    # ret=[DIR1 : DIR2] Scanning my/long/path/
+    # get 80 symbols from scanning path for DirDiff
     
     def on_timeout(self, *args, **kwargs):        
         #print("on_timeout=")
@@ -305,16 +304,19 @@ class MeldWindow(Component):
         path = self.scanning_path
         #print("path=" + path)
             
-        index = path.rfind(' ')
+        index = path.find('/')
         if index != -1:
-             text = path[index:]
-                
-             num = len(text)
-             if num > 80: num = 80
-             #print("num=%d" % num)
-             text = text[-num:]
+            index2 = path.rfind(' ')
+            if index2 != -1: index = index2
             
-             self.label.set_label(text)
+            text = path[index:]
+                
+            num = len(text)
+            if num > 80: num = 80
+            #print("num=%d" % num)
+            text = text[-num:]
+            
+            self.label.set_label(text)
                 
         return True
 
