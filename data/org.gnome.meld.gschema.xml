@@ -164,6 +164,11 @@
           <summary>Use shallow comparison</summary>
           <description>If true, folder comparisons compare files based solely on size and mtime, considering files to be identical if their size and mtime match, and different otherwise.</description>
       </key>
+      <key name="folder-compare-by-changed-text" type="b">
+          <default>true</default>
+          <summary>Run comparison when found folder in entering text</summary>
+          <description>Run comparison when found folder in entering text.</description>
+      </key>
       <key name="folder-time-resolution" type="i">
           <default>100</default>
           <summary>File timestamp resolution</summary>

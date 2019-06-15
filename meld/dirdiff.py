@@ -297,6 +297,7 @@ class DirDiff(MeldDoc, Component):
 
     __gsettings_bindings__ = (
         ('folder-ignore-symlinks', 'ignore-symlinks'),
+        ('folder-compare-by-changed-text', 'compare-by-changed-text'),
         ('folder-shallow-comparison', 'shallow-comparison'),
         ('folder-time-resolution', 'time-resolution'),
         ('folder-status-filters', 'status-filters'),
@@ -328,6 +329,12 @@ class DirDiff(MeldDoc, Component):
         type=bool,
         nick="Use shallow comparison",
         blurb="Whether to compare files based solely on size and mtime",
+        default=False,
+    )
+    compare_by_changed_text = GObject.Property(
+        type=bool,
+        nick="Run compare by changed text",
+        blurb="Run compare by changed text and found folder",
         default=False,
     )
     status_filters = GObject.Property(
@@ -679,9 +686,12 @@ class DirDiff(MeldDoc, Component):
         self.set_locations(files)
         
     # bug: activated signal not always raise after manual changed text and enter
-    # try automaticly set path if we found dir (add to prefrences)
+    # try automaticly set path if we found dir (switch in prefrences)
     def on_fileentry_lineedit_changed(self, entry):
 
+        is_cmp_enable = settings.get_boolean('folder-compare-by-changed-text')
+        if is_cmp_enable == False: return
+        
         name = entry.get_text()
         print("Changed " + name + "!")
                 

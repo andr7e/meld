@@ -200,6 +200,7 @@ class PreferencesDialog(Component):
             ('highlight-syntax', self.checkbutton_use_syntax_highlighting, 'active'),  # noqa: E501
             ('use-system-editor', self.system_editor_checkbutton, 'active'),
             ('custom-editor-command', self.custom_edit_command_entry, 'text'),
+            ('folder-compare-by-changed-text', self.checkbutton_cmp_by_changed_text, 'active'),  # noqa: E501
             ('folder-shallow-comparison', self.checkbutton_shallow_compare, 'active'),  # noqa: E501
             ('folder-filter-text', self.checkbutton_folder_filter_text, 'active'),  # noqa: E501
             ('folder-ignore-symlinks', self.checkbutton_ignore_symlinks, 'active'),  # noqa: E501
