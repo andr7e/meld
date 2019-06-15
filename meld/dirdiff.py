@@ -921,7 +921,7 @@ class DirDiff(MeldDoc, Component):
             "Scanned files in folders appear identical, but contents have not "
             "been scanned.")
         file_filter_qualifier = _(
-            "File filters are in use, so not all files have been scanned.")
+            "Perhaps not all files were scanned due to the use of file filters.")
         text_filter_qualifier = _(
             "Text filters are in use and may be masking content differences.")
 
