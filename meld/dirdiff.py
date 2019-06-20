@@ -1110,38 +1110,51 @@ class DirDiff(MeldDoc, Component):
 
             is_single_foldable_row = False
             is_single_file_row = False
+            is_virtual_folder = False # empty folder
             if (selection.count_selected_rows() == 1):
                 path = selection.get_selected_rows()[1][0]
                 it = self.model.get_iter(path)
                 os_path = self.model.value_path(it, pane)
-                is_single_foldable_row = self.model.is_folder(
-                    it, pane, os_path)
-                is_single_file_row = not is_single_foldable_row
+                
+                if os_path != None:
+                   is_single_foldable_row = self.model.is_folder(it, pane, os_path)
+                   is_single_file_row = not is_single_foldable_row
+                else:
+                   is_virtual_folder = True
 
-            get_action("DirCompare").set_sensitive(True)
-            get_action("DirCollapseRecursively").set_visible(
-                is_single_foldable_row)
-            get_action("DirExpandRecursively").set_visible(
-                is_single_foldable_row)
-            get_action("Hide").set_sensitive(True)
-            get_action("DirDelete").set_sensitive(
-                is_valid and not busy)
-            get_action("DirCopyLeft").set_sensitive(
-                is_valid and not busy and pane > 0)
-            get_action("DirCopyRight").set_sensitive(
-                is_valid and not busy and pane + 1 < self.num_panes)
-            if self.main_actiongroup:
-                act = self.main_actiongroup.get_action("OpenExternal")
-                act.set_sensitive(is_valid)
-            if self.main_actiongroup:
-                act = self.main_actiongroup.get_action("OpenDirExternal")
-                act.set_visible(is_valid and is_single_file_row)
-        else:
+            if not is_virtual_folder:
+                get_action("DirCompare").set_sensitive(True)
+                get_action("DirCollapseRecursively").set_visible(
+                    is_single_foldable_row)
+                get_action("DirExpandRecursively").set_visible(
+                    is_single_foldable_row)
+                get_action("Hide").set_sensitive(True)
+                get_action("DirDelete").set_sensitive(
+                    is_valid and not busy)
+                get_action("DirCopyLeft").set_sensitive(
+                    is_valid and not busy and pane > 0)
+                get_action("DirCopyRight").set_sensitive(
+                    is_valid and not busy and pane + 1 < self.num_panes)
+                if self.main_actiongroup:
+                    act = self.main_actiongroup.get_action("OpenExternal")
+                    act.set_sensitive(is_valid)
+                if self.main_actiongroup:
+                    act = self.main_actiongroup.get_action("OpenDirExternal")
+                    act.set_visible(is_valid and is_single_file_row)
+                
+        if not have_selection or is_virtual_folder:
             for action in ("DirCompare", "DirCopyLeft", "DirCopyRight",
                            "DirDelete", "Hide"):
                 get_action(action).set_sensitive(False)
+                
+            get_action("DirCollapseRecursively").set_visible(False)
+            get_action("DirExpandRecursively").set_visible(False)
+            
             if self.main_actiongroup:
                 act = self.main_actiongroup.get_action("OpenExternal")
+                act.set_sensitive(False)
+            if self.main_actiongroup:
+                act = self.main_actiongroup.get_action("OpenDirExternal")
                 act.set_sensitive(False)
 
     def on_treeview_cursor_changed(self, *args):
@@ -1512,9 +1525,11 @@ class DirDiff(MeldDoc, Component):
         return different
 
     def popup_in_pane(self, pane, event):
+        # ToDo: something for virtual 'empty folder'
         self.actiongroup.get_action("DirCopyLeft").set_sensitive(pane > 0)
         self.actiongroup.get_action("DirCopyRight").set_sensitive(
             pane + 1 < self.num_panes)
+            
         if event:
             button = event.button
             time = event.time
